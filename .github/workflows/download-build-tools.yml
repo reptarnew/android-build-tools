@@ -1,0 +1,25 @@
+name: Package Android Build Tools
+
+on:
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'build-tools;35.0.0'
+
+      - name: Package Build Tools
+        run: |
+          cd "$ANDROID_SDK_ROOT"
+          zip -qr "$GITHUB_WORKSPACE/build-tools-35.0.0.zip" build-tools/35.0.0
+
+      - name: Upload Build Tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-tools-35.0.0
+          path: build-tools-35.0.0.zip
